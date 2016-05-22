@@ -31,6 +31,7 @@ public class ResponseEmitterHelper {
 		List<ResponseBodyEmitter> list = gameEmitters.get(gameKey);
 		if (list == null) {
 			list = new ArrayList<>();
+			gameEmitters.put(gameKey, list);
 		}
 		list.add(emitter);
 	}
@@ -51,6 +52,11 @@ public class ResponseEmitterHelper {
 			String gameKey, String userKey, Errors errors) throws IOException {
 		emitter.send(ValidationErrosBuilder.build(gameKey, userKey, errors));
 		emitter.complete();
+	}
+	
+	@Async void emitUserKey(ResponseBodyEmitter emitter, MastermindGame game, 
+			String userKey) throws IOException {
+		emitter.send(MessageGameFlowHelper.getUserKey(userKey));
 	}
 	
 	@Async
@@ -105,6 +111,7 @@ public class ResponseEmitterHelper {
 				logger.error("Unexpected error while emitting msg: ", e1);
 			}
 		});
+		removeGameEmitters(game.getGameKey());
 		
 		logger.debug("<< emitPartyCompletedMessageForAll");
 	}
@@ -140,7 +147,7 @@ public class ResponseEmitterHelper {
 			MastermindGame game) throws IOException {
 		logger.debug(">> emitPlayerGuessedMessage");
 		
-		emitter.send(MessageGameFlowHelper.watingForPlayers(game));
+		emitter.send(MessageGameFlowHelper.watingForGuesses(game));
 		logger.debug("<< emitPlayerGuessedMessage");
 	}
 
@@ -156,6 +163,8 @@ public class ResponseEmitterHelper {
 				logger.error("Unexpected error while emitting msg: ", e1);
 			}
 		});
+		removeGameEmitters(game.getGameKey());
+		
 		logger.debug("<< emitEndOfTurnForAll");
 	}
 	

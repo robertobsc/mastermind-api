@@ -23,7 +23,7 @@ public class ValidationErrosBuilder {
 		to.setErrors(
 		errors.getAllErrors()
 			  .stream()
-			  .map(ObjectError::getDefaultMessage)
+			  .map(ObjectError::getCode)
 			  .collect(Collectors.toList()));
 		
 		to.setGameKey(gameKey);

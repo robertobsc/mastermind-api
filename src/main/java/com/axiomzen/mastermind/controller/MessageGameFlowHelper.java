@@ -11,6 +11,10 @@ public class MessageGameFlowHelper {
 		return new MessageTO("Ops! Unexpected behavior while " + action + ": " + e.getMessage());
 	}
 	
+	public static MessageTO getUserKey(String userKey) {
+		return new MessageTO("Your user key is " + userKey + ". It is needed for /guess endpoint.");
+	}
+	
 	public static MessageTO watingForPlayers(MastermindGame game){
 		return new MessageTO(
 				"Waiting for other user to join the game with key " 

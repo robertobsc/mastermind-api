@@ -20,7 +20,7 @@ import com.axiomzen.mastermind.domain.interfaces.PlayResult;
 public class MastermindRule implements GameRule{
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public static final int MAX_GAME_PERIOD = 5;
+	public static final int MAX_GAME_PERIOD = 30;
 	public static final int CALENDAR_PERIOD = Calendar.MINUTE;
 	public static final String NAME_PERIOD = "Minutes";
 

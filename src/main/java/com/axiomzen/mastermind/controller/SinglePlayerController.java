@@ -26,6 +26,10 @@ import com.axiomzen.mastermind.domain.interfaces.GameRule;
 import com.axiomzen.mastermind.domain.to.GuessReqTO;
 import com.axiomzen.mastermind.domain.to.MessageTO;
 
+/**
+ * Singleplayer version of Mastermind game.
+ * @author Roberto Costa
+ */
 @RestController
 @RequestMapping("/singleplayer")
 public class SinglePlayerController {
@@ -61,8 +65,9 @@ public class SinglePlayerController {
 						ValidationErrosBuilder.build(errors));
 			}
 
+			User savedUser = User.save(user);
 			return ResponseEntity.ok(
-					MastermindGame.create(user, 1, mastermindRule)
+					MastermindGame.create(savedUser, 1, mastermindRule)
 					.toInitialGameResponseTO());
 		} catch(Exception e) {
 			return ResponseEntity.badRequest().body(

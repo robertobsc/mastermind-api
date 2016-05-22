@@ -43,6 +43,9 @@ public class Guess implements Play{
 		to.setExactly(result.getQttExactly());
 		to.setNear(result.getQttNear());
 		to.setGuess(getGuess());
+		if (getUser() != null){
+			to.setUser(getUser().getUser());
+		}
 		
 		return to;
 	}

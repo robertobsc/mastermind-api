@@ -41,7 +41,7 @@ public class InitialGameResponseTO extends MessageTO{
 		this.game_key = game_key;
 	}
 	public int getNum_guesses() {
-		return (past_results.isEmpty()) ? 0 : past_results.size() + 1;
+		return (past_results == null || past_results.isEmpty()) ? 0 : past_results.size() + 1;
 	}
 	public List<GuessResultTO> getPast_results() {
 		return past_results;
