@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-public class ValidationErrorsTO {
+@JsonInclude(Include.NON_EMPTY)
+public class ValidationErrorsTO extends MessageTO{
 
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private List<String> errors = new ArrayList<>();
-
-	private String errorMessage;
+	private String userKey;
+	private String gameKey;
+	
 
 	public List<String> getErrors() {
 		return errors;
@@ -20,10 +22,19 @@ public class ValidationErrorsTO {
 		this.errors = errors;
 	}
 
-	public void setErrorMessage(String msg) {
-		this.errorMessage = msg;
+	public String getUserKey() {
+		return userKey;
 	}
-	public String getErrorMessage() {
-		return errorMessage;
+
+	public void setUserKey(String userKey) {
+		this.userKey = userKey;
+	}
+
+	public String getGameKey() {
+		return gameKey;
+	}
+
+	public void setGameKey(String gameKey) {
+		this.gameKey = gameKey;
 	}
 }

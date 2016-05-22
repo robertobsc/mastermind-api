@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<title>New Mastermind Game</title>
+	</head>
+	<body>
+		<form name="newGame" id="newGame" th:action="@{/multiplayer/new_game}" method="POST">
+			User: <input type="text" name="user"></input>
+			<br/>
+			Number of players: <input type="text" name="numPlayers"></input>
+			<button type="submit">Start Game</button>
+		</form>
+	</body>
+</html>

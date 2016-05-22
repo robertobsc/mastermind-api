@@ -1,5 +1,9 @@
 package com.axiomzen.mastermind.domain.to;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_EMPTY)
 public class GameWonTO extends GuessResponseTO {
 /*	{ 
 	    "code_length": 8, 
@@ -27,18 +31,18 @@ public class GameWonTO extends GuessResponseTO {
 	}*/
 	
 	private Double time_taken;
-	private String user;
-	
+	private String winner;
+
 	public Double getTime_taken() {
 		return time_taken;
 	}
 	public void setTime_taken(Double time_taken) {
 		this.time_taken = time_taken;
 	}
-	public String getUser() {
-		return user;
+	public String getWinner() {
+		return winner;
 	}
-	public void setUser(String user) {
-		this.user = user;
+	public void setWinner(String winner) {
+		this.winner = winner;
 	}
 }

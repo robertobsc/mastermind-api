@@ -24,6 +24,7 @@ import com.axiomzen.mastermind.domain.MastermindGame;
 import com.axiomzen.mastermind.domain.User;
 import com.axiomzen.mastermind.domain.interfaces.GameRule;
 import com.axiomzen.mastermind.domain.to.GuessReqTO;
+import com.axiomzen.mastermind.domain.to.MessageTO;
 
 @RestController
 @RequestMapping("/singleplayer")
@@ -52,7 +53,7 @@ public class SinglePlayerController {
 	}
 	
 	@RequestMapping(value = "/new_game", consumes = "application/json",method = RequestMethod.POST)
-	public ResponseEntity startGame(@RequestBody @Valid User user, Errors errors){
+	public ResponseEntity<MessageTO> startGame(@RequestBody @Valid User user, Errors errors){
 		
 		try {
 			if (errors.hasErrors()) {
@@ -61,30 +62,36 @@ public class SinglePlayerController {
 			}
 
 			return ResponseEntity.ok(
-					MastermindGame.create(user, mastermindRule)
+					MastermindGame.create(user, 1, mastermindRule)
 					.toInitialGameResponseTO());
 		} catch(Exception e) {
 			return ResponseEntity.badRequest().body(
-					"Ops! Unexpected error while creating the game: " + e.getMessage());
+					MessageGameFlowHelper.getException("creating the game", e));
 		}
 	
 	}
 	
 	@RequestMapping(value = "/guess", consumes = "application/json",method = RequestMethod.POST)
-	public ResponseEntity guess(@RequestBody @Valid GuessReqTO guess, Errors errors) {
+	public ResponseEntity<MessageTO> guess(@RequestBody @Valid GuessReqTO guess, Errors errors) {
 	
 		try {
 	        if (errors.hasErrors()) {
+	        	
+	        	String gameKey = (guess != null && guess.getGame_key() != null) ?
+	        			guess.getGame_key() : "";
+	        			
 	            return ResponseEntity.badRequest().body(
-	            		ValidationErrosBuilder.build(errors));
+	            		ValidationErrosBuilder.build(gameKey, errors));
 	        }			
 			
 			return ResponseEntity.ok(
-					MastermindGame.doNewGuess(
-							Guess.fromGuessRequestTO(guess)));
+					MastermindGame
+						.doNewGuess(Guess.fromGuessRequestTO(guess))
+						.toGuessResponseTO());
 		} catch(Exception e) {
+			logger.error("Error in guess: ", e);
 			return ResponseEntity.badRequest().body(
-					"Ops! Unexpected error while making this guess: " + e.getMessage());
+					MessageGameFlowHelper.getException("making this guess", e));
 		}
 	}
 }

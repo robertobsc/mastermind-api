@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<title>Join Mastermind Game</title>
+	</head>
+	<body>
+		<form name="newGame" id="newGame" th:action="@{/multiplayer/join_game}" method="POST">
+			User: <input type="text" name="user"></input>
+			Game Key: <input type="text" name="gameKey"></input>
+			<button type="submit">Join Game</button>
+		</form>
+	</body>
+</html>

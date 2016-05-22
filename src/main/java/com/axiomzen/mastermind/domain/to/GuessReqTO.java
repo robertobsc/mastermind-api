@@ -4,6 +4,7 @@ public class GuessReqTO {
 
 	private String code;
 	private String game_key;
+	private String user_key;
 	public String getCode() {
 		return code;
 	}
@@ -15,5 +16,11 @@ public class GuessReqTO {
 	}
 	public void setGame_key(String game_key) {
 		this.game_key = game_key;
+	}
+	public String getUser_key() {
+		return user_key;
+	}
+	public void setUser_key(String user_key) {
+		this.user_key = user_key;
 	}
 }

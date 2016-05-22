@@ -33,6 +33,7 @@ public class Guess implements Play{
 		Guess guess = new Guess();
 		guess.setGuess(reqTO.getCode());
 		guess.setGameKey(reqTO.getGame_key());
+		guess.setUser(User.get(reqTO.getUser_key()));
 		
 		return guess;
 	}
@@ -62,5 +63,13 @@ public class Guess implements Play{
 	}
 	public void setResult(GuessResult result) {
 		this.result = result;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<title>Your time to guess!</title>
+	</head>
+	<body>
+		<form name="guess" id="guess" th:action="@{/multiplayer/guess}" method="POST">
+			User Key: <input type="text" name="userKey"></input>
+			Game Key: <input type="text" name="gameKey"></input>
+			<button type="submit">Guess!</button>
+		</form>
+	</body>
+</html>

@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -19,13 +21,17 @@ import com.axiomzen.mastermind.domain.to.InitialGameResponseTO;
 
 public class MastermindGame extends Entity implements Game{
 	
+	private String gameKey;
 	private GameRule rule = null;
 	private Date startDate;
-	private User user;
-	private String gameKey;
 	private List<ValidColors> anwser;
-	private List<Guess> guesses = new ArrayList<>();
+	private List<User> users;
+	private Integer numberOfUsers;
+	private List<Guess> guesses;
 	private Guess currentGuess;
+	private int turnNumber;
+	private Map<Integer, List<Guess>> guessesInTurn;
+	private boolean endOfTurn;
 	private boolean gameSolved = false;
 	
 	private MastermindGame(){}
@@ -40,11 +46,13 @@ public class MastermindGame extends Entity implements Game{
 	public void setKey(String key) {
 		this.gameKey = key;
 	}
-	public static MastermindGame create(User user, GameRule rule){
+	public static MastermindGame create(User user, int numOfUsers, GameRule rule){
 		MastermindGame game = new MastermindGame();
 		game.rule = rule;
 		game.anwser = MastermindGame.generateAnwser();
-		game.setUser(user);
+		game.users = new ArrayList<>();
+		game.users.add(user);
+		game.numberOfUsers = numOfUsers;
 		game.setStartDate(Calendar.getInstance().getTime());
 		
 		return registry.create(game);
@@ -52,6 +60,9 @@ public class MastermindGame extends Entity implements Game{
 	
 	public static MastermindGame get(String key){
 		return registry.get(key);
+	}
+	public static MastermindGame save(MastermindGame game){
+		return registry.save(game);
 	}
 	
 	public static List<String> validateGuess(Guess guess) {
@@ -64,13 +75,19 @@ public class MastermindGame extends Entity implements Game{
 		MastermindGame game = get(guess.getGameKey());
 		if (game == null) {
 			errors.add("The game Key passed " + guess.getGameKey() + " is invalid.");
+			return errors;
+		}
+		
+		User user = guess.getUser();
+		if(game.hasUserPlayedInTurn(guess.getUser())) {
+			errors.add("User " + user.getUser() + " has already played. Wait for the next turn.");
 		}
 		errors.addAll(game.getRule().validate(guess, game));
 		
 		return errors;
 	}
 	
-	public static GuessResponseTO doNewGuess(Guess guess){
+	public static MastermindGame doNewGuess(Guess guess){
 		MastermindGame g = fromGuess(guess);
 		g.currentGuess = guess;
 		
@@ -79,32 +96,34 @@ public class MastermindGame extends Entity implements Game{
 		
 		g.gameSolved = result.getQttExactly() == ValidColors.values().length;
 		
-		GuessResponseTO ret = g.toGuessResponseTO();
-		
 		g.getGuesses().add(guess);
-		g.currentGuess = null;
 		
-		return ret;
+		return save(g);
 	}
 	
-	private InitialGameResponseTO toInitialGameResponseTO(InitialGameResponseTO to){
+	public boolean hasUserPlayedInTurn(User user){
+		String userKey = user.getKey();
 		
-		to.setColors(Arrays.asList(ValidColors.values()));
-		to.setGame_key(getGameKey());
-		to.setPast_results(
-				getGuesses().stream()
-				.map(Guess::toGuessResultTO)
-				.collect(Collectors.toList()));
-		
-		to.setSolved(isGameSolved());
-		
-		return to;		
+		return getUsersGuessedInTurn()
+			.stream()
+			.anyMatch(u -> userKey.equals(u.getKey()));
 	}
+	public List<String> getUserNamesNotGuessed() {
+		Set<User> usersGuessed = getUsersGuessedInTurn();
+
+		return 
+		getUsers()
+			.stream()
+			.filter(u -> !usersGuessed.contains(u))
+			.map(User::getUser)
+			.collect(Collectors.toList());
+	}
+	
 	public InitialGameResponseTO toInitialGameResponseTO(){
 		return toInitialGameResponseTO(new InitialGameResponseTO());
 	}
 	
-	private GuessResponseTO toGuessResponseTO() {
+	public GuessResponseTO toGuessResponseTO() {
 		GuessResponseTO to = isGameSolved() ? new GameWonTO() : new GuessResponseTO(); 
 		to = (GuessResponseTO) toInitialGameResponseTO(to);
 		
@@ -120,10 +139,35 @@ public class MastermindGame extends Entity implements Game{
 			
 			wonTo.setSolved(true);
 			wonTo.setTime_taken((now - startTime)/1000.0);
-			wonTo.setUser(user.getUser());
+			wonTo.setWinner(getCurrentGuess().getUser().getUser());
 		}
 		
 		return to;
+	}
+
+	private Set<User> getUsersGuessedInTurn(){
+		return getGuessesInTurn().get(getTurnNumber())
+				.stream()
+				.map(Guess::getUser)
+				.collect(Collectors.toSet());
+	}
+	private InitialGameResponseTO toInitialGameResponseTO(InitialGameResponseTO to){
+		
+		to.setColors(Arrays.asList(ValidColors.values()));
+		to.setGame_key(getGameKey());
+		
+		int pastResSize = 
+				getGuesses().isEmpty() ? 0 :getGuesses().size() - 1;
+		to.setPast_results(
+				getGuesses().stream()
+				.limit(pastResSize)
+				.map(Guess::toGuessResultTO)
+				.collect(Collectors.toList()));
+		
+		to.setUsers(getUsers().stream().map(User::getUser).collect(Collectors.toList()));
+		to.setSolved(isGameSolved());
+		
+		return to;		
 	}
 
 	private static MastermindGame fromGuess(Guess guess) {
@@ -161,11 +205,11 @@ public class MastermindGame extends Entity implements Game{
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	public User getUser() {
-		return user;
+	public List<User> getUsers() {
+		return users;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(List<User> users) {
+		this.users = users;
 	}
 
 	public String getGameKey() {
@@ -194,5 +238,20 @@ public class MastermindGame extends Entity implements Game{
 
 	public Guess getCurrentGuess() {
 		return currentGuess;
+	}
+	public int getTurnNumber() {
+		return turnNumber;
+	}
+	public Map<Integer, List<Guess>> getGuessesInTurn() {
+		return guessesInTurn;
+	}
+	public boolean isEndOfTurn() {
+		return guessesInTurn.get(getTurnNumber()).size() == getUsers().size();
+	}
+	public Integer getNumberOfUsers() {
+		return numberOfUsers;
+	}
+	public void setNumberOfUsers(Integer numberOfUsers) {
+		this.numberOfUsers = numberOfUsers;
 	}
 }

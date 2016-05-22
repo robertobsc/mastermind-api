@@ -3,8 +3,11 @@ package com.axiomzen.mastermind.domain.to;
 import java.util.List;
 
 import com.axiomzen.mastermind.domain.MastermindRule.ValidColors;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-public class InitialGameResponseTO {
+//@JsonInclude(Include.NON_EMPTY)
+public class InitialGameResponseTO extends MessageTO{
 /*	{ 
 	    "colors": ["R","B","G","Y","O","P","C","M"], 
 	    "code_length": 8, 
@@ -13,7 +16,8 @@ public class InitialGameResponseTO {
 	    "past_results": [], 
 	    "solved": "false" 
 	}*/
-	
+
+	private List<String> users;	
 	private List<ValidColors> colors;
 	private int code_length;
 	private String game_key;
@@ -51,5 +55,10 @@ public class InitialGameResponseTO {
 	public void setSolved(boolean solved) {
 		this.solved = solved;
 	}
-	
+	public List<String> getUsers() {
+		return users;
+	}
+	public void setUsers(List<String> users) {
+		this.users = users;
+	}
 }
