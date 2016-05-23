@@ -28,7 +28,7 @@ http://localhost:8080/mastermind-api/  and complete with the specs below.
 ## /singleplayer
 The singleplayer api is quite simple. There are two posts methods. You can submit them with a client rest application in chrome or by curl command line in linux.
 
-/singleplayer/new_game
+**/singleplayer/new_game**
 
 	Input:
 	{ "user": "Roberto Costa" }
@@ -53,13 +53,14 @@ The singleplayer api is quite simple. There are two posts methods. You can submi
 	}
 
 
-/singleplayer/guess
-Input: 
+**/singleplayer/guess**
+
+	Input: 
 	{ 
 		"code": "YCPOMRGB", 
 		"game_key": "pc73mccpf3033gpnuasv" 
 	}
-Excpected Result in case your guess is not correct:
+	Excpected Result in case your guess is not correct:
 	{
 	  "users": [
 		"Roberto Costa"
@@ -84,8 +85,7 @@ Excpected Result in case your guess is not correct:
 		}
 	  ]
 	}
-
-Excpected Result in case your guess IS correct (you won!):
+	Excpected Result in case your guess IS correct (you won!):
 	{
 	  "users": [
 		"Roberto Costa"
