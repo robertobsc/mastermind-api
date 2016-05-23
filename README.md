@@ -137,10 +137,10 @@ The singleplayer api is quite simple. There are two posts methods. You can submi
 	}
 
 ## /multiplayer
+**BE PREPARED!!** This api is not for 2, but for **N** players!!
+
 The multiplayer api is more complex. 
 The client rest applications (like the chrome extensions) don't work with the technology that I am using (i am using spring streaming to keep notifying users). 
-
-I designed this api to support N users, but I only tested with two.
 
 I created some really simple pages to make possible to test the apis, since just the browser itself can streaming data.
 
