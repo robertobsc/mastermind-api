@@ -31,7 +31,7 @@ public class MessageGameFlowHelper {
 		InitialGameResponseTO to = game.toInitialGameResponseTO();
 		
 		to.setMessage("Now you can start guessing at /multiplayer/guess endpoint!"
-				+ " We will wait for both guesses to return an anwser.");
+				+ " We will wait for all guesses to return an anwser.");
 		
 		return to;
 	}
@@ -45,7 +45,7 @@ public class MessageGameFlowHelper {
 		GuessResponseTO to = game.toGuessResponseTO();
 		
 		to.setMessage(game.isGameSolved() ? "Seems we've got a winner!!!" : 
-			"End of turn. Prepare for another rund at /multiplayer/guess endpoint!");
+			"End of turn. Prepare for another round at /multiplayer/guess endpoint!");
 		
 		return to;
 	}
