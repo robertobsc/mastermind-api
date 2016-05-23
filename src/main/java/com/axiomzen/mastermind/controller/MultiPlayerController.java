@@ -2,6 +2,7 @@ package com.axiomzen.mastermind.controller;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -76,7 +77,17 @@ public class MultiPlayerController {
 	}
 	
 	@RequestMapping(value = "/new_game", consumes = "application/json", method = RequestMethod.POST)
-	public ResponseEntity<ResponseBodyEmitter> startMultiPlayerGame(@Valid User user,
+	public ResponseEntity<ResponseBodyEmitter> startMultiPlayerGame(@RequestBody Map<String,String> map
+			, Errors errors) throws IOException{
+		
+		User user = new User();
+		user.setUser(map.get("user"));
+		
+		createGameValidator.validate(user, errors);
+		return startMultiPlayerGame(user, Integer.parseInt(map.get("numPlayers")), errors);
+		
+	}
+	private ResponseEntity<ResponseBodyEmitter> startMultiPlayerGame(User user, 
 			Integer numPlayers, Errors errors) throws IOException{
 
 		logger.debug(">> startMultiPlayerGame");
@@ -114,9 +125,28 @@ public class MultiPlayerController {
 	public String joinMultiPlayerGamePage() {
 		return "joinGame";
 	}
+
+	@RequestMapping(value = "/join_game", 
+	consumes = "application/x-www-form-urlencoded;charset=UTF-8", 
+	method = RequestMethod.POST)	
+	public ResponseEntity<ResponseBodyEmitter> joinMultiPlayerGameFromPage(
+			@Valid User joinUser, String gameKey, Errors errors) throws IOException{
+		
+		return joinMultiPlayerGame(joinUser, gameKey, errors);
+	}
 	
-	@RequestMapping(value = "/join_game", method = RequestMethod.POST)
-	public ResponseEntity<ResponseBodyEmitter> joinMultiPlayerGame(@Valid User joinUser, String gameKey, Errors errors) throws IOException{
+	@RequestMapping(value = "/join_game", consumes = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<ResponseBodyEmitter> joinMultiPlayerGame(
+			@RequestBody Map<String,String> map , Errors errors) throws IOException{
+		
+		User user = new User();
+		user.setUser(map.get("user"));
+		
+		createGameValidator.validate(user, errors);
+		return joinMultiPlayerGame(user, map.get("gameKey"), errors);
+	}
+	
+	private ResponseEntity<ResponseBodyEmitter> joinMultiPlayerGame(@Valid User joinUser, String gameKey, Errors errors) throws IOException{
 
 		logger.debug(">> joinMultiPlayerGame({},{})", joinUser, gameKey);
 		MastermindGame game = null;
