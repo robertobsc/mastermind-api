@@ -29,6 +29,7 @@ http://localhost:8080/mastermind-api/  and complete with the specs below.
 The singleplayer api is quite simple. There are two posts methods. You can submit them with a client rest application in chrome or by curl command line in linux.
 
 /singleplayer/new_game
+
 Input:
 { "user": "Roberto Costa" }
 
@@ -60,6 +61,7 @@ Input:
     "game_key": "pc73mccpf3033gpnuasv" 
 }
 Excpected Result in case your guess is not correct:
+``
 {
   "users": [
     "Roberto Costa"
@@ -84,6 +86,7 @@ Excpected Result in case your guess is not correct:
     }
   ]
 }
+``
 
 Excpected Result in case your guess IS correct (you won!):
 {
@@ -146,7 +149,8 @@ I created some really simple pages to make possible to test the apis, since just
 
 Here's the apis:
 
-/multiplayer/new_game  (Alternatively invoked from a simple html page, that can be acessed typing /multiplayer/new_page at the browser)
+**/multiplayer/new_game**  (Alternatively invoked from a simple html page, that can be acessed typing /multiplayer/new_page at the browser)
+
 { "user": "Roberto Costa" ,  "numPlayers" : "2"}
 
 Expected Result:
@@ -169,11 +173,14 @@ You will receive **N+1** messages depending of the number of users that was spec
 	{"message":"Now you can start guessing at /multiplayer/guess endpoint! We will wait for both guesses to return an anwser.","users":["Roberto","Juuba","Antonio"],"colors":["R","B","G","Y","O","P","C","M"],"code_length":8,"game_key":"dfqe5itvkip53smpghul","solved":false}
 
 	
-/multiplayer/join_game (Alternatively invoked from a simple html page, that can be acessed typing /multiplayer/join_game at the browser)
+**/multiplayer/join_game** (Alternatively invoked from a simple html page, that can be acessed typing /multiplayer/join_game at the browser)
+
 { "user": "Roberto Costa" ,  "gameKey" : "pc73mccpf3033gpnuasv"}
 
 Expected Result:
+
 	If it is a game with only two users you will receive two messages:
+	
 	{"message":"Your user key is 3kmnaqoct893t5e3jnlf. It is needed for /guess endpoint."}
 	{"message":"Now you can start guessing at /multiplayer/guess endpoint! We will wait for both guesses to return an anwser.","users":["Roberto","Antonio"],"colors":["R","B","G","Y","O","P","C","M"],"code_length":8,"game_key":"e95vb086nk0lj21hboms","solved":false}
 
@@ -187,7 +194,8 @@ Expected Result:
 	}
 
 	
-/multiplayer/guess (Alternatively invoked from a simple html page, that can be acessed typing /multiplayer/guess at the browser)
+**/multiplayer/guess** (Alternatively invoked from a simple html page, that can be acessed typing /multiplayer/guess at the browser)
+
 { "user_key": "3kmnaqoct893t5e3jnlf" ,  "game_key" : "pc73mccpf3033gpnuasv", "code" : "YCPOMRGB" }
 
 Expected Result:
