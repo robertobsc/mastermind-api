@@ -30,114 +30,111 @@ The singleplayer api is quite simple. There are two posts methods. You can submi
 
 /singleplayer/new_game
 
-Input:
-{ "user": "Roberto Costa" }
-
-Expected result:
-{
-  "users": [
-    "Roberto Costa"
-  ],
-  "colors": [
-    "R",
-    "B",
-    "G",
-    "Y",
-    "O",
-    "P",
-    "C",
-    "M"
-  ],
-  "code_length": 8,
-  "game_key": "pc73mccpf3033gpnuasv",
-  "solved": false
-}
+	Input:
+	{ "user": "Roberto Costa" }
+	Expected result:
+	{
+	  "users": [
+		"Roberto Costa"
+	  ],
+	  "colors": [
+		"R",
+		"B",
+		"G",
+		"Y",
+		"O",
+		"P",
+		"C",
+		"M"
+	  ],
+	  "code_length": 8,
+	  "game_key": "pc73mccpf3033gpnuasv",
+	  "solved": false
+	}
 
 
 /singleplayer/guess
 Input: 
-{ 
-    "code": "YCPOMRGB", 
-    "game_key": "pc73mccpf3033gpnuasv" 
-}
+	{ 
+		"code": "YCPOMRGB", 
+		"game_key": "pc73mccpf3033gpnuasv" 
+	}
 Excpected Result in case your guess is not correct:
-``
-{
-  "users": [
-    "Roberto Costa"
-  ],
-  "colors": [
-    "R",
-    "B",
-    "G",
-    "Y",
-    "O",
-    "P",
-    "C",
-    "M"
-  ],
-  "code_length": 8,
-  "game_key": "pc73mccpf3033gpnuasv",
-  "solved": false,
-  "result": [
-    {
-      "guess": "RPYGOGOP",
-      "near": 8
-    }
-  ]
-}
-``
+	{
+	  "users": [
+		"Roberto Costa"
+	  ],
+	  "colors": [
+		"R",
+		"B",
+		"G",
+		"Y",
+		"O",
+		"P",
+		"C",
+		"M"
+	  ],
+	  "code_length": 8,
+	  "game_key": "pc73mccpf3033gpnuasv",
+	  "solved": false,
+	  "result": [
+		{
+		  "guess": "RPYGOGOP",
+		  "near": 8
+		}
+	  ]
+	}
 
 Excpected Result in case your guess IS correct (you won!):
-{
-  "users": [
-    "Roberto Costa"
-  ],
-  "colors": [
-    "R",
-    "B",
-    "G",
-    "Y",
-    "O",
-    "P",
-    "C",
-    "M"
-  ],
-  "code_length": 8,
-  "game_key": "pc73mccpf3033gpnuasv",
-  "num_guesses": 6,
-  "past_results": [
-    {
-      "guess": "RPYGOGOP",
-      "near": 8
-    },
-    {
-      "guess": "RPYGOGOP",
-      "near": 8
-    },
-    {
-      "guess": "RPYGOGOP",
-      "near": 8
-    },
-    {
-      "guess": "RPYGOGOP",
-      "near": 8
-    },
-    {
-      "exactly": 8,
-      "guess": "YCPOMRGB"
-    }
-  ],
-  "solved": true,
-  "result": [
-    {
-      "exactly": 8,
-      "guess": "YCPOMRGB"
-    }
-  ],
-  "time_taken": 348.291,
-  "winner": "Roberto Costa"
-}
+	{
+	  "users": [
+		"Roberto Costa"
+	  ],
+	  "colors": [
+		"R",
+		"B",
+		"G",
+		"Y",
+		"O",
+		"P",
+		"C",
+		"M"
+	  ],
+	  "code_length": 8,
+	  "game_key": "pc73mccpf3033gpnuasv",
+	  "num_guesses": 6,
+	  "past_results": [
+		{
+		  "guess": "RPYGOGOP",
+		  "near": 8
+		},
+		{
+		  "guess": "RPYGOGOP",
+		  "near": 8
+		},
+		{
+		  "guess": "RPYGOGOP",
+		  "near": 8
+		},
+		{
+		  "guess": "RPYGOGOP",
+		  "near": 8
+		},
+		{
+		  "exactly": 8,
+		  "guess": "YCPOMRGB"
+		}
+	  ],
+	  "solved": true,
+	  "result": [
+		{
+		  "exactly": 8,
+		  "guess": "YCPOMRGB"
+		}
+	  ],
+	  "time_taken": 348.291,
+	  "winner": "Roberto Costa"
+	}
 
 ## /multiplayer
 The multiplayer api is more complex. 
@@ -151,7 +148,7 @@ Here's the apis:
 
 **/multiplayer/new_game**  (Alternatively invoked from a simple html page, that can be acessed typing /multiplayer/new_page at the browser)
 
-{ "user": "Roberto Costa" ,  "numPlayers" : "2"}
+	{ "user": "Roberto Costa" ,  "numPlayers" : "2"}
 
 Expected Result:
 
