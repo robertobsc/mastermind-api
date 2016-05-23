@@ -18,7 +18,7 @@ public class MessageGameFlowHelper {
 	public static MessageTO watingForPlayers(MastermindGame game){
 		return new MessageTO(
 				"Waiting for other user to join the game with key " 
-				+ game.getKey() + " ...\n");
+				+ game.getKey() + " ...");
 	}
 	
 	public static MessageTO userJoinedWaitingForMore(MastermindGame game) {
@@ -38,7 +38,7 @@ public class MessageGameFlowHelper {
 	public static MessageTO watingForGuesses(MastermindGame game){
 		return new MessageTO(
 				"Waiting for user(s) to guess " 
-				+ game.getUserNamesNotGuessed() + " ...\n");
+				+ game.getUserNamesNotGuessed() + " ...");
 	}
 	
 	public static GuessResponseTO enfOfTurn(MastermindGame game) {
