@@ -104,8 +104,6 @@ public class MultiPlayerController {
 			logger.error("Error while starting multiplayer game: ", e);
 
 			responseEmitterHelper.emitExceptionResponse(emitter, "creating the game", e);
-//			return ResponseEntity.badRequest().body(
-//					MessageGameFlowHelper.getException("creating the game", e));
 		} finally {
 			logger.debug("<< startMultiPlayerGame");
 		}
@@ -127,16 +125,13 @@ public class MultiPlayerController {
 		try {
 			
 			if (errors.hasErrors()) {
-				responseEmitterHelper.emitValidationErrors(emitter, gameKey, "", errors);
-//				return new ResponseEntity(ValidationErrosBuilder.build(gameKey, errors),
-//						getHttpHeaders(), HttpStatus.BAD_REQUEST);				
+				responseEmitterHelper.emitValidationErrors(emitter, gameKey, "", errors);				
 			} else {
 				synchronized(this) {
 					game = MastermindGame.get(gameKey);
 					if (MultiPlayerValidator.checkPartyFull(gameKey, errors)){
 						responseEmitterHelper.emitValidationErrors(emitter, gameKey, "", errors);
-//						return new ResponseEntity(ValidationErrosBuilder.build(gameKey, errors),
-//								getHttpHeaders(), HttpStatus.BAD_REQUEST);
+						return respEntity;
 					}
 					
 					User userSaved = User.save(joinUser);
