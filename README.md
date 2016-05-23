@@ -155,25 +155,29 @@ Here's the apis:
 
 Expected Result:
 
-You will receive **N+1** messages depending of the number of users that was specified at the input:
- 1 - A confirmation message with your userKey 
+	You will receive **N+1** messages depending of the number of users that was specified at the input:
+	1 - A confirmation message with your userKey 
 	{"message":"Your user key is p8i7eb8s8vtkar64ahkb. It is needed for /guess endpoint."}
 	
- 2 - A message to each user that joined your game
+	2 - A message to each user that joined your game
 	{"message":"Waiting for other user to join the game with key e95vb086nk0lj21hboms ...\n"}
 	
- 3 - If the game has more than two users, than you receive the message below for each user that joined the game:
+	3 - If the game has more than two users, than you receive the message below for each user that joined the game:
 	{"message":"New user joined! Wainting for more 1"}
 
- 4 - The last message with the summarization of the players party process:
+	4 - The last message with the summarization of the players party process:
+ 
 	Example with 2 players:
+	
 	{"message":"Now you can start guessing at /multiplayer/guess endpoint! We will wait for both guesses to return an anwser.","users":["Roberto","Antonio"],"colors":["R","B","G","Y","O","P","C","M"],"code_length":8,"game_key":"e95vb086nk0lj21hboms","solved":false}
 
 	Example with 3 players:
 	{"message":"Now you can start guessing at /multiplayer/guess endpoint! We will wait for both guesses to return an anwser.","users":["Roberto","Juuba","Antonio"],"colors":["R","B","G","Y","O","P","C","M"],"code_length":8,"game_key":"dfqe5itvkip53smpghul","solved":false}
 
+
 	
 **/multiplayer/join_game** (Alternatively invoked from a simple html page, that can be acessed typing /multiplayer/join_game at the browser)
+Input:
 
 { "user": "Roberto Costa" ,  "gameKey" : "pc73mccpf3033gpnuasv"}
 
